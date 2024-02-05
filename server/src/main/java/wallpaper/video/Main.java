@@ -44,7 +44,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        String path = "/Users/wushuo/Desktop/431960/";
+        String path = "E:\\SteamLibrary\\steamapps\\workshop\\content\\431960";
         loadList(path);
 
         WatchMonitor watchMonitor = WatchMonitor.createAll(path, new SimpleWatcher() {
@@ -66,7 +66,7 @@ public class Main {
         watchMonitor.start();
 
         HttpUtil.createServer(8080)
-                .addAction("/list", (req, res) -> {
+                .addAction("/api/list", (req, res) -> {
                     List<Project> list = files;
                     String body = req.getBody();
                     SearchDto dto = gson.fromJson(body, SearchDto.class);
@@ -89,7 +89,7 @@ public class Main {
                     res.write(gson.toJson(projectVos), ContentType.JSON.getValue());
                     res.close();
                 })
-                .addAction("/preview", (req, res) -> {
+                .addAction("/api/preview", (req, res) -> {
                     ListValueMap<String, String> params = req.getParams();
                     String id = params.get("id", 0);
                     Optional<Project> first = files.stream().filter(item -> item.getId().equals(id)).findFirst();
@@ -103,7 +103,7 @@ public class Main {
                     res.write(new File(file));
                     res.close();
                 })
-                .addAction("/play", (req, res) -> {
+                .addAction("/api/play", (req, res) -> {
                     ListValueMap<String, String> params = req.getParams();
                     String id = params.get("id", 0);
                     Optional<Project> first = files.stream().filter(item -> item.getId().equals(id)).findFirst();
@@ -121,6 +121,7 @@ public class Main {
                     res.write(new File(file));
                     res.close();
                 })
+                .setRoot(Thread.currentThread().getContextClassLoader().getResource("dist").getFile())
                 .start();
     }
 }

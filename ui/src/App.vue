@@ -1,7 +1,7 @@
 <template>
   <div class="max">
-    <n-modal v-model:show="showModal" style="background: white;border-radius: 6px;margin: auto;">
-      <video controls style="margin: 5px auto;" :src='videoUrl' width="800px" height="300px"></video>
+    <n-modal v-model:show="showModal" style="border-radius: 6px;margin: auto;">
+      <video controls style="margin: 5px auto;" :src='videoUrl' width="900px" height="500px"></video>
     </n-modal>
     <div style="max-width: 80%;margin: auto;height: 100%;padding-top: 10%;box-sizing: border-box;">
       <div style="display: flex;flex-flow: column;height:100%;">
@@ -38,7 +38,6 @@
 .light-green {
   height: 108px;
   width: 108px;
-  /*background-color: rgba(0, 128, 0, 0.12);*/
   display: flex;
   align-items: center;
   justify-content: center;
@@ -69,9 +68,8 @@
 
 import {onMounted, ref} from 'vue'
 
-let value = ref(null);
 let list = ref([]);
-let videoUrl = ref(null);
+let videoUrl = ref('');
 let showModal = ref(false);
 let searchText = ref('');
 
@@ -96,7 +94,7 @@ let search = () => {
 }
 
 let check = (id) => {
-  videoUrl.value = '/api/play?id=' + id;
+  videoUrl.value = `/api/play?id=${id}`;
   showModal.value = true
 }
 
