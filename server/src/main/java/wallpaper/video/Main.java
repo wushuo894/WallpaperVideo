@@ -44,7 +44,7 @@ public class Main {
 
     private final static List<Project> files = new ArrayList<>();
 
-    private static synchronized void loadList(String path) {
+    private static synchronized void loadList() {
         List<Project> projectList = FileUtil.loopFiles(path, file -> file.getName().equals("project.json"))
                 .stream()
                 .map(getEntity)
@@ -54,25 +54,44 @@ public class Main {
         files.addAll(projectList);
     }
 
+    private static String path = "Z:\\SteamLibrary\\steamapps\\workshop\\content\\431960";
+
     @SneakyThrows
     public static void main(String[] args) {
-        String path = "Z:\\SteamLibrary\\steamapps\\workshop\\content\\431960";
-        loadList(path);
+        int port = 8080;
+
+        if (args.length % 2 > 0) {
+            return;
+        }
+
+        for (List<String> strings : CollUtil.split(List.of(args), 2)) {
+            String k = strings.get(0);
+            String v = strings.get(1);
+            if (List.of("-p", "--port").contains(k)) {
+                port = Integer.parseInt(v);
+                continue;
+            }
+            if (List.of("-f", "--file").contains(k)) {
+                path = v;
+            }
+        }
+
+        loadList();
 
         WatchMonitor watchMonitor = WatchMonitor.createAll(path, new SimpleWatcher() {
             @Override
             public void onCreate(WatchEvent<?> event, Path currentPath) {
-                loadList(path);
+                loadList();
             }
 
             @Override
             public void onModify(WatchEvent<?> event, Path currentPath) {
-                loadList(path);
+                loadList();
             }
 
             @Override
             public void onDelete(WatchEvent<?> event, Path currentPath) {
-                loadList(path);
+                loadList();
             }
         });
         watchMonitor.start();
@@ -99,7 +118,7 @@ public class Main {
             }
         }
 
-        HttpUtil.createServer(8080)
+        HttpUtil.createServer(port)
                 .addAction("/api/list", (req, res) -> {
                     List<Project> list = files;
                     String body = req.getBody();
