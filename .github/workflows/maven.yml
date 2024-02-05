@@ -31,7 +31,7 @@ jobs:
         npm install pnpm -g
         pnpm install
         pnpm run build
-        mv dist ../server/src/main/resources
+        mv dist ../server/src/main/resources/
         cd ..
         mvn -B package --file server/pom.xml
         cp server/target/WallpaperVideo-jar-with-dependencies.jar ./
