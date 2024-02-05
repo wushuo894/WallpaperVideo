@@ -30,6 +30,6 @@ jobs:
         path=$pwd
         cd server
         mvn -B package --file pom.xml
-        cp target/WallpaperVideo-jar-with-dependencies.jar $path
-        echo $path
-        ls $path
+        cp target/WallpaperVideo-jar-with-dependencies.jar "$path"
+        echo "$path"
+        ls "$path"
