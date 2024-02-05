@@ -7,7 +7,7 @@
       <div style="display: flex;flex-flow: column;height:100%;">
         <div style="flex-grow: 1;display: flex; align-items: center;justify-content: center;">
           <n-space>
-            <n-input v-model:value="searchText" type="text" placeholder="请输入关键字"/>
+            <n-input style="width: 400px;" v-model:value="searchText" type="text" placeholder="请输入关键字" @keyup.enter="search" />
             <n-button style="cursor: pointer;" @click="search">搜索</n-button>
           </n-space>
         </div>
