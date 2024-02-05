@@ -27,9 +27,6 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: |
-        path=$pwd
-        cd server
-        mvn -B package --file pom.xml
-        cp target/WallpaperVideo-jar-with-dependencies.jar "$path"
-        echo "$path"
-        ls "$path"
+        mvn -B package --file server/pom.xml
+        cp server/target/WallpaperVideo-jar-with-dependencies.jar ./
+        
