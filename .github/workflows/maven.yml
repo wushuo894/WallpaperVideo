@@ -35,4 +35,8 @@ jobs:
         cd ..
         mvn -B package --file server/pom.xml
         cp server/target/WallpaperVideo-jar-with-dependencies.jar ./
-        ls
+    - name: Upload to Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: Artifacts
+        path: ./*.jar
