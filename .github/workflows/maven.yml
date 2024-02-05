@@ -31,7 +31,6 @@ jobs:
         npm install pnpm -g
         pnpm install
         pnpm run build
-        mkdir ../server/src/main/resources/dist
         mv dist ../server/src/main/resources/dist
         cd ..
         mvn -B package --file server/pom.xml
