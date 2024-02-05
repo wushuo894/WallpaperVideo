@@ -28,6 +28,7 @@ jobs:
     - name: Build with Maven
       run: |
         cd ui
+        npm install pnpm -g
         pnpm install
         pnpm run build
         mv dist ../server/src/main/resources
