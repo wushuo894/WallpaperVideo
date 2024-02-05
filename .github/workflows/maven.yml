@@ -27,6 +27,7 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: |
+        mkdir /server/src/main/resources/dist
         cd ui
         npm install pnpm -g
         pnpm install
