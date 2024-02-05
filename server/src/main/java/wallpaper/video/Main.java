@@ -76,10 +76,10 @@ public class Main {
                     if (StrUtil.isNotBlank(text)) {
                         list = list.stream()
                                 .filter(item ->
-                                        StrUtil.contains(item.getId(), text) ||
-                                                StrUtil.contains(item.getTitle(), text) ||
-                                                StrUtil.contains(item.getDescription(), text) ||
-                                                StrUtil.contains(item.getType(), text) ||
+                                        StrUtil.containsIgnoreCase(item.getId(), text) ||
+                                                StrUtil.containsIgnoreCase(item.getTitle(), text) ||
+                                                StrUtil.containsIgnoreCase(item.getDescription(), text) ||
+                                                StrUtil.containsIgnoreCase(item.getType(), text) ||
                                                 CollUtil.contains(item.getTags(), text)
                                 ).collect(Collectors.toList());
                     }
