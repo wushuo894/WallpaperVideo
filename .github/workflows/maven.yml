@@ -27,7 +27,11 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: |
-        npm
+        cd ui
+        pnpm install
+        pnpm run build
+        mv dist ../server/src/main/resources
+        cd ..
         mvn -B package --file server/pom.xml
         cp server/target/WallpaperVideo-jar-with-dependencies.jar ./
-        
+        ls
