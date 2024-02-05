@@ -2,23 +2,34 @@ package wallpaper.video;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.resource.ResourceUtil;
 import cn.hutool.core.io.watch.SimpleWatcher;
 import cn.hutool.core.io.watch.WatchMonitor;
 import cn.hutool.core.map.multi.ListValueMap;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.URLUtil;
 import cn.hutool.http.ContentType;
 import cn.hutool.http.HttpUtil;
 import com.google.gson.Gson;
+import lombok.Cleanup;
+import lombok.SneakyThrows;
 
 import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.WatchEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
 
 public class Main {
 
@@ -43,8 +54,9 @@ public class Main {
         files.addAll(projectList);
     }
 
+    @SneakyThrows
     public static void main(String[] args) {
-        String path = "E:\\SteamLibrary\\steamapps\\workshop\\content\\431960";
+        String path = "Z:\\SteamLibrary\\steamapps\\workshop\\content\\431960";
         loadList(path);
 
         WatchMonitor watchMonitor = WatchMonitor.createAll(path, new SimpleWatcher() {
@@ -64,6 +76,28 @@ public class Main {
             }
         });
         watchMonitor.start();
+
+        URL dist = ResourceUtil.getResource("dist");
+        File root = new File(dist.getFile());
+        if (dist.getProtocol().equals("jar")) {
+            root = new File("").getAbsoluteFile();
+            JarFile jarFile = URLUtil.getJarFile(dist);
+            List<JarEntry> distList = ListUtil.toList(jarFile.entries());
+            for (ZipEntry jarEntry : distList) {
+                String name = jarEntry.getName();
+                if (!name.startsWith("dist")) {
+                    continue;
+                }
+                if (jarEntry.isDirectory()) {
+                    FileUtil.mkdir(root + File.separator + name);
+                    continue;
+                }
+                @Cleanup
+                InputStream inputStream = jarFile.getInputStream(jarEntry);
+                System.out.println(new File(root + File.separator + name));
+                FileUtil.writeFromStream(inputStream, root + File.separator + name);
+            }
+        }
 
         HttpUtil.createServer(8080)
                 .addAction("/api/list", (req, res) -> {
@@ -121,7 +155,7 @@ public class Main {
                     res.write(new File(file));
                     res.close();
                 })
-                .setRoot(Thread.currentThread().getContextClassLoader().getResource("dist").getFile())
+                .setRoot(root + File.separator + "dist")
                 .start();
     }
 }
