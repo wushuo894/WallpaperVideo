@@ -16,9 +16,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 17
@@ -29,8 +27,9 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: |
-        pwd
+        $path = $pwd
         cd server
         mvn -B package --file pom.xml
-        cp target/WallpaperVideo-jar-with-dependencies.jar ~
-        ls ~
+        cp target/WallpaperVideo-jar-with-dependencies.jar $path
+        echo $path
+        ls $path
