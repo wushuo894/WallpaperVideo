@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.WatchEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -30,7 +31,13 @@ public class ProjectUtil {
 
     public final static List<Project> FILES = new ArrayList<>();
 
-    public static synchronized void loadList() {
+    private static final ReentrantLock LOCK = new ReentrantLock();
+
+    public static void loadList() {
+        if (LOCK.tryLock()) {
+            return;
+        }
+        LOCK.lock();
         List<Project> projectList = FileUtil.loopFiles(path, file -> file.getName().equals("project.json"))
                 .stream()
                 .map(getEntity)
@@ -38,6 +45,7 @@ public class ProjectUtil {
                 .collect(Collectors.toList());
         FILES.clear();
         FILES.addAll(projectList);
+        LOCK.unlock();
     }
 
     public static void startWatch() {
