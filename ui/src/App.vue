@@ -112,7 +112,7 @@ let search = (pageNo) => {
         {
           text: searchText.value,
           pageNo: page.value.pageNo,
-          size: 30
+          size: 100
         }
     )
   })
