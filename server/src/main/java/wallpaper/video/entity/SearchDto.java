@@ -1,4 +1,4 @@
-package wallpaper.video;
+package wallpaper.video.entity;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
