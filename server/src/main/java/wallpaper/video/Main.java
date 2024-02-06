@@ -38,7 +38,7 @@ public class Main {
             }
         }
 
-        if (FileUtil.exist(path)) {
+        if (!FileUtil.exist(path)) {
             System.out.println("文件不存在 " + path);
             System.exit(1);
         }
