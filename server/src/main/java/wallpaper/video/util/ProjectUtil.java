@@ -6,6 +6,7 @@ import cn.hutool.core.io.watch.WatchMonitor;
 import cn.hutool.core.thread.ThreadUtil;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import wallpaper.video.entity.Project;
 
 import java.io.File;
@@ -35,8 +36,9 @@ public class ProjectUtil {
 
     private static final ReentrantLock LOCK = new ReentrantLock();
 
+    @SneakyThrows
     public static void loadList() {
-        if (LOCK.tryLock()) {
+        if (!LOCK.tryLock(100,TimeUnit.MILLISECONDS)) {
             return;
         }
         LOCK.lock();
