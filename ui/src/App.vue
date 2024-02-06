@@ -15,7 +15,12 @@
         <div style="overflow: hidden;flex-grow: 7;margin-top: 40px;margin-bottom: 10px;box-sizing: border-box;">
           <n-scrollbar style="overflow:hidden;width: 100%;">
             <div
-                style="display: grid;grid-template-columns: repeat(auto-fit,minmax(108px,1fr)); width: 100%;gap: 10px 10px;">
+                style="display: grid;
+                width: 100%;
+                gap: 10px 10px;
+                grid-template-columns: repeat(auto-fill, 100px);
+                grid-template-rows: 100px 100px;">
+
               <div class="light-green click"
                    @click="check(item.id)"
                    v-for="item in page.list"
@@ -24,7 +29,9 @@
                      backgroundSize: 'cover'
                  }"
               >
-                {{ item['title'] }}
+                <p class="two-lines" style="margin:  0 3px;box-sizing: border-box;">
+                  {{ item['title'] }}
+                </p>
               </div>
             </div>
           </n-scrollbar>
@@ -51,12 +58,20 @@
   box-sizing: border-box;
   display: flex;
   align-items: end;
-  font-size: 12px;
+  font-size: 8px;
   color: white;
 }
 
+.two-lines {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
 .click:hover {
-  border: red solid 1px;
+  border: white solid 4px;
   cursor: pointer;
 }
 
