@@ -74,7 +74,7 @@ import {onMounted, ref} from 'vue'
 
 let page = ref({
   pageNo: 1,
-  size: 30,
+  size: 100,
   totalPage: 1,
   list: []
 });
