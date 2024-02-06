@@ -2,11 +2,13 @@ package wallpaper.video.action;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.PageUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.ContentType;
 import cn.hutool.http.server.HttpServerRequest;
 import cn.hutool.http.server.HttpServerResponse;
 import cn.hutool.http.server.action.Action;
+import wallpaper.video.entity.Page;
 import wallpaper.video.entity.Project;
 import wallpaper.video.entity.ProjectVo;
 import wallpaper.video.entity.SearchDto;
@@ -38,8 +40,24 @@ public class ListAction implements Action {
         }
 
 
+        Integer pageNo = dto.getPageNo();
+        Integer size = dto.getSize();
+
+        int start = PageUtil.getStart(pageNo, size);
+        int end = PageUtil.getEnd(pageNo, size);
+        int totalPage = PageUtil.totalPage(list.size(), size);
+
+        list = CollUtil.sub(list, start, end);
+
         List<ProjectVo> projectVos = BeanUtil.copyToList(list, ProjectVo.class);
-        res.write(JSON.toJson(projectVos), ContentType.JSON.getValue());
+
+        Page<ProjectVo> page = new Page<ProjectVo>()
+                .setSize(size)
+                .setPageNo(pageNo)
+                .setList(projectVos)
+                .setTotalPage(totalPage);
+
+        res.write(JSON.toJson(page), ContentType.JSON.getValue());
         res.close();
     }
 }

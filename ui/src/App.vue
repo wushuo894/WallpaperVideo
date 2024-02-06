@@ -7,17 +7,18 @@
       <div style="display: flex;flex-flow: column;height:100%;">
         <div style="flex-grow: 1;display: flex; align-items: center;justify-content: center;">
           <n-space>
-            <n-input style="width: 400px;" v-model:value="searchText" type="text" placeholder="请输入关键字" @keyup.enter="search" />
+            <n-input style="width: 400px;" v-model:value="searchText" type="text" placeholder="请输入关键字"
+                     @keyup.enter="search"/>
             <n-button style="cursor: pointer;" @click="search">搜索</n-button>
           </n-space>
         </div>
-        <div style="overflow: hidden;flex-grow: 9;margin-top: 40px;margin-bottom: 10%;">
+        <div style="overflow: hidden;flex-grow: 7;margin-top: 40px;margin-bottom: 10px;box-sizing: border-box;">
           <n-scrollbar style="overflow:hidden;width: 100%;">
             <div
                 style="display: grid;grid-template-columns: repeat(auto-fit,minmax(108px,1fr)); width: 100%;gap: 10px 10px;">
               <div class="light-green click"
                    @click="check(item.id)"
-                   v-for="item in list"
+                   v-for="item in page.list"
                    :style="{
                      backgroundImage: `url(/api/preview?id=${item.id})`,
                      backgroundSize: 'cover'
@@ -28,6 +29,9 @@
             </div>
           </n-scrollbar>
         </div>
+        <n-space vertical style="margin: auto;padding-bottom: 40px;">
+          <n-pagination v-model:page="page.pageNo" :page-count="page.totalPage"/>
+        </n-space>
       </div>
     </div>
   </div>
@@ -68,7 +72,12 @@
 
 import {onMounted, ref} from 'vue'
 
-let list = ref([]);
+let page = ref({
+  pageNo: 0,
+  size: 10,
+  totalPage: 1,
+  list: []
+});
 let videoUrl = ref('');
 let showModal = ref(false);
 let searchText = ref('');
@@ -89,7 +98,7 @@ let search = () => {
   })
       .then(req => req.json())
       .then(json => {
-        list.value = json;
+        page.value = json;
       })
 }
 
