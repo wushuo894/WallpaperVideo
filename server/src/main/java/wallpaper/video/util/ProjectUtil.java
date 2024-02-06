@@ -49,10 +49,8 @@ public class ProjectUtil {
                 .collect(Collectors.toList());
         FILES.clear();
         FILES.addAll(projectList);
-        ThreadUtil.execute(() -> {
-            ThreadUtil.sleep(30, TimeUnit.SECONDS);
-            LOCK.unlock();
-        });
+        ThreadUtil.sleep(30, TimeUnit.SECONDS);
+        LOCK.unlock();
     }
 
     public static void startWatch() {
