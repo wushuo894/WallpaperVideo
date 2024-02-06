@@ -18,8 +18,8 @@
         <div style="flex-grow: 1;display: flex; align-items: center;justify-content: center;">
           <n-space>
             <n-input style="width: 400px;" v-model:value="searchText" type="text" placeholder="请输入关键字"
-                     @keyup.enter="search"/>
-            <n-button style="cursor: pointer;" @click="search">搜索</n-button>
+                     @keyup.enter="search(1)"/>
+            <n-button style="cursor: pointer;" @click="search(1)">搜索</n-button>
           </n-space>
         </div>
         <div style="overflow: hidden;flex-grow: 7;margin-top: 40px;margin-bottom: 10px;box-sizing: border-box;">
@@ -123,7 +123,10 @@ onMounted(() => {
   search();
 })
 
-let search = () => {
+let search = (_pageNo) => {
+  if (_pageNo) {
+    pageNo.value = _pageNo
+  }
   fetch('/api/list', {
     method: 'POST',
     body: JSON.stringify(
