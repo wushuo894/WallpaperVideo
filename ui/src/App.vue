@@ -88,13 +88,15 @@ onMounted(() => {
 })
 
 let search = (pageNo) => {
-  page.value.pageNo = pageNo
+  if (pageNo) {
+    page.value.pageNo = pageNo
+  }
   fetch('/api/list', {
     method: 'POST',
     body: JSON.stringify(
         {
           text: searchText.value,
-          pageNo: pageNo,
+          pageNo: page.value.pageNo,
           size: 30
         }
     )
