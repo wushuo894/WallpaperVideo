@@ -42,9 +42,10 @@ public class ListAction implements Action {
         Integer pageNo = dto.getPageNo();
         Integer size = dto.getSize();
 
+        int total = list.size();
         int start = PageUtil.getStart(pageNo, size);
         int end = PageUtil.getEnd(pageNo, size);
-        int totalPage = PageUtil.totalPage(list.size(), size);
+        int totalPage = PageUtil.totalPage(total, size);
 
         list = CollUtil.sub(list, start, end);
 
@@ -54,7 +55,7 @@ public class ListAction implements Action {
                 .setSize(size)
                 .setPageNo(pageNo)
                 .setList(projectVos)
-                .setTotal(list.size())
+                .setTotal(total)
                 .setTotalPage(totalPage);
 
         res.write(JSON.toJson(page), ContentType.JSON.getValue());
