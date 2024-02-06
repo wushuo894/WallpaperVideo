@@ -11,6 +11,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * 视频播放
+ */
 public class PlayAction implements Action {
     @Override
     public void doAction(HttpServerRequest req, HttpServerResponse res) throws IOException {

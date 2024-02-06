@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * 列表
+ */
 public class ListAction implements Action {
     @Override
     public void doAction(HttpServerRequest req, HttpServerResponse res) throws IOException {

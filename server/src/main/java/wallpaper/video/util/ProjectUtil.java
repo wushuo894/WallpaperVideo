@@ -25,6 +25,9 @@ public class ProjectUtil {
     @Setter
     public static String path;
 
+    /**
+     * 转换为实体
+     */
     private final static Function<File, Project> getEntity = file -> {
         String json = FileUtil.readUtf8String(file);
         return JSON.fromJson(json, Project.class)
@@ -36,6 +39,9 @@ public class ProjectUtil {
 
     private static final ReentrantLock LOCK = new ReentrantLock();
 
+    /**
+     * 加载列表 避免频繁扫盘加了30秒的锁
+     */
     @SneakyThrows
     public static void loadList() {
         ThreadUtil.execute(() -> {
@@ -55,6 +61,9 @@ public class ProjectUtil {
         });
     }
 
+    /**
+     * 监控目录变化实时更新目录
+     */
     public static void startWatch() {
         WatchMonitor watchMonitor = WatchMonitor.createAll(path, new SimpleWatcher() {
             @Override

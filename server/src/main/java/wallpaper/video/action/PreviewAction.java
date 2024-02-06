@@ -16,8 +16,15 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * 封面
+ */
 public class PreviewAction implements Action {
+    /**
+     * 避免频繁4k读 添加封面缓存
+     */
     private final static Map<String, byte[]> imageCache = new HashMap<>();
+
     private final static ReentrantLock LOCK = new ReentrantLock();
 
     @Override
@@ -48,7 +55,8 @@ public class PreviewAction implements Action {
         ThreadUtil.execute(() -> {
             LOCK.lock();
             if (!imageCache.containsKey(id)) {
-                imageCache.put(id, bytes);
+                // 为了让bytes及时释放不要使用上面的bytes 而是分配到锁后再进行及时读取
+                imageCache.put(id, FileUtil.readBytes(file));
             }
             LOCK.unlock();
         });

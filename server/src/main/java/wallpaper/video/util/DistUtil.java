@@ -17,6 +17,11 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
 public class DistUtil {
+    /**
+     * 释放前端文件
+     *
+     * @return
+     */
     @SneakyThrows
     public static File getDistFile() {
         URL dist = ResourceUtil.getResource("dist");
