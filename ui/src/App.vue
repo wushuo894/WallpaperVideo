@@ -92,7 +92,9 @@ let search = () => {
     method: 'POST',
     body: JSON.stringify(
         {
-          'text': searchText.value
+          text: searchText.value,
+          pageNo: page.value.pageNo,
+          size: 30
         }
     )
   })
