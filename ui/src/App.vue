@@ -30,7 +30,7 @@
           </n-scrollbar>
         </div>
         <n-space vertical style="margin: auto;padding-bottom: 40px;">
-          <n-pagination :onUpdatePage="search" v-model:page="page.pageNo" :page-count="page.totalPage"/>
+          <n-pagination :onUpdatePage="search" v-model:page="page.pageNo" v-model:page-count="page.totalPage"/>
         </n-space>
       </div>
     </div>
@@ -74,7 +74,7 @@ import {onMounted, ref} from 'vue'
 
 let page = ref({
   pageNo: 1,
-  size: 10,
+  size: 30,
   totalPage: 1,
   list: []
 });

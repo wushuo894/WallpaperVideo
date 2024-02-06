@@ -38,19 +38,21 @@ public class ProjectUtil {
 
     @SneakyThrows
     public static void loadList() {
-        if (LOCK.isLocked()) {
-            return;
-        }
-        LOCK.lock();
-        List<Project> projectList = FileUtil.loopFiles(path, file -> file.getName().equals("project.json"))
-                .stream()
-                .map(getEntity)
-                .filter(project -> "video".equalsIgnoreCase(project.getType()))
-                .collect(Collectors.toList());
-        FILES.clear();
-        FILES.addAll(projectList);
-        ThreadUtil.sleep(30, TimeUnit.SECONDS);
-        LOCK.unlock();
+        ThreadUtil.execute(() -> {
+            if (LOCK.isLocked()) {
+                return;
+            }
+            LOCK.lock();
+            List<Project> projectList = FileUtil.loopFiles(path, file -> file.getName().equals("project.json"))
+                    .stream()
+                    .map(getEntity)
+                    .filter(project -> "video".equalsIgnoreCase(project.getType()))
+                    .collect(Collectors.toList());
+            FILES.clear();
+            FILES.addAll(projectList);
+            ThreadUtil.sleep(30, TimeUnit.SECONDS);
+            LOCK.unlock();
+        });
     }
 
     public static void startWatch() {

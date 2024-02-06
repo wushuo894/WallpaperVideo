@@ -54,6 +54,7 @@ public class ListAction implements Action {
                 .setSize(size)
                 .setPageNo(pageNo)
                 .setList(projectVos)
+                .setTotal(list.size())
                 .setTotalPage(totalPage);
 
         res.write(JSON.toJson(page), ContentType.JSON.getValue());

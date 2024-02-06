@@ -11,6 +11,7 @@ public class Page<T> {
     private Integer pageNo;
     private Integer size;
     private Integer totalPage;
+    private Integer total;
     /**
      * 列表
      */
