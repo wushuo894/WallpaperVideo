@@ -3,6 +3,7 @@ package wallpaper.video.util;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.watch.SimpleWatcher;
 import cn.hutool.core.io.watch.WatchMonitor;
+import cn.hutool.core.thread.ThreadUtil;
 import lombok.Getter;
 import lombok.Setter;
 import wallpaper.video.entity.Project;
@@ -12,6 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.WatchEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -45,7 +47,10 @@ public class ProjectUtil {
                 .collect(Collectors.toList());
         FILES.clear();
         FILES.addAll(projectList);
-        LOCK.unlock();
+        ThreadUtil.execute(() -> {
+            ThreadUtil.sleep(30, TimeUnit.SECONDS);
+            LOCK.unlock();
+        });
     }
 
     public static void startWatch() {
