@@ -43,6 +43,7 @@ public class ListAction implements Action {
         Integer size = dto.getSize();
 
         int total = list.size();
+        PageUtil.setFirstPageNo(1);
         int start = PageUtil.getStart(pageNo, size);
         int end = PageUtil.getEnd(pageNo, size);
         int totalPage = PageUtil.totalPage(total, size);
