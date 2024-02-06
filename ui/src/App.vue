@@ -30,7 +30,7 @@
           </n-scrollbar>
         </div>
         <n-space vertical style="margin: auto;padding-bottom: 40px;">
-          <n-pagination v-model:page="page.pageNo" :page-count="page.totalPage"/>
+          <n-pagination @on-update:page="search" :page="page.pageNo" :page-count="page.totalPage"/>
         </n-space>
       </div>
     </div>
@@ -73,7 +73,7 @@
 import {onMounted, ref} from 'vue'
 
 let page = ref({
-  pageNo: 0,
+  pageNo: 1,
   size: 10,
   totalPage: 1,
   list: []
@@ -87,13 +87,14 @@ onMounted(() => {
   search()
 })
 
-let search = () => {
+let search = (pageNo) => {
+  page.value.pageNo = pageNo
   fetch('/api/list', {
     method: 'POST',
     body: JSON.stringify(
         {
           text: searchText.value,
-          pageNo: page.value.pageNo,
+          pageNo: pageNo,
           size: 30
         }
     )

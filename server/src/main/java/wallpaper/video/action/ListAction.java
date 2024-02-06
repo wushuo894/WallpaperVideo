@@ -39,7 +39,6 @@ public class ListAction implements Action {
                     ).collect(Collectors.toList());
         }
 
-
         Integer pageNo = dto.getPageNo();
         Integer size = dto.getSize();
 
