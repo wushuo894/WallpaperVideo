@@ -1,7 +1,17 @@
 <template>
   <div class="max">
     <n-modal v-model:show="showModal" style="border-radius: 6px;margin: auto;">
-      <video controls style="margin: 5px auto;" :src='videoUrl' width="900px" height="500px"></video>
+      <div style="width: 50%;box-sizing: border-box;overflow: hidden;">
+        <div style="width: 100%;display: flex;justify-content: center;">
+          <video controls :src='videoUrl' width="900px" height="500px"></video>
+        </div>
+        <div style="margin-top: 10px;width: 100%;">
+          <h2 style="color: white;">{{ item['title'] }}</h2>
+          <p style="color: white;">{{ item['description'] }}</p>
+          <p @click="toOpen(`https://steamcommunity.com/sharedfiles/filedetails/?id=${item.id}`)"
+             style="text-decoration: underline;cursor: pointer; color: white;">创意工坊</p>
+        </div>
+      </div>
     </n-modal>
     <div style="max-width: 80%;margin: auto;height: 100%;padding-top: 10%;box-sizing: border-box;">
       <div style="display: flex;flex-flow: column;height:100%;">
@@ -17,13 +27,11 @@
             <div
                 style="display: grid;
                 width: 100%;
-                gap: 10px 10px;
-                grid-template-columns: repeat(auto-fill, 100px);
-                grid-template-rows: 100px 100px;">
-
+                gap: 5px 5px;
+                grid-template-columns: repeat(auto-fill,108px);">
               <div class="light-green click"
-                   @click="check(item.id)"
-                   v-for="item in page.list"
+                   @click="check(item)"
+                   v-for="item in list"
                    :style="{
                      backgroundImage: `url(/api/preview?id=${item.id})`,
                      backgroundSize: 'cover'
@@ -37,7 +45,15 @@
           </n-scrollbar>
         </div>
         <n-space vertical style="margin: auto;padding-bottom: 40px;">
-          <n-pagination :onUpdatePage="search" v-model:page="page.pageNo" v-model:page-count="page.totalPage"/>
+          <n-pagination
+              :onUpdatePage="search"
+              :onUpdatePageSize="updatePageSize"
+              v-model:page="pageNo"
+              v-model:page-count="totalPage"
+              :page-sizes="[100, 200, 300, 400,500]"
+              v-model:page-size="pageSize"
+              show-quick-jumper
+              show-size-picker/>
         </n-space>
       </div>
     </div>
@@ -60,6 +76,7 @@
   align-items: end;
   font-size: 8px;
   color: white;
+  cursor: pointer;
 }
 
 .two-lines {
@@ -71,8 +88,7 @@
 }
 
 .click:hover {
-  border: white solid 4px;
-  cursor: pointer;
+  border: 4px solid black;
 }
 
 .max {
@@ -87,43 +103,53 @@
 
 import {onMounted, ref} from 'vue'
 
-let page = ref({
-  pageNo: 1,
-  size: 100,
-  totalPage: 1,
-  list: []
-});
+let list = ref([]);
+let pageNo = ref(1);
+let totalPage = ref(1);
+let pageSize = ref(100);
+
 let videoUrl = ref('');
 let showModal = ref(false);
 let searchText = ref('');
 
+let item = ref({});
+
 
 onMounted(() => {
-  search()
+  let size = localStorage.getItem('size');
+  if (size) {
+    pageSize.value = Number.parseInt(size);
+  }
+  search();
 })
 
-let search = (pageNo) => {
-  if (pageNo) {
-    page.value.pageNo = pageNo
-  }
+let search = () => {
   fetch('/api/list', {
     method: 'POST',
     body: JSON.stringify(
         {
           text: searchText.value,
-          pageNo: page.value.pageNo,
-          size: 100
+          pageNo: pageNo.value,
+          size: pageSize.value
         }
     )
   })
       .then(req => req.json())
       .then(json => {
-        page.value = json;
+        totalPage.value = json['totalPage']
+        list.value = json['list']
       })
 }
 
-let check = (id) => {
-  videoUrl.value = `/api/play?id=${id}`;
+let toOpen = url => open(url)
+
+let updatePageSize = (size) => {
+  localStorage.setItem('size', size);
+}
+
+let check = (_item) => {
+  item.value = _item
+  videoUrl.value = `/api/play?id=${_item.id}`;
   showModal.value = true
 }
 
