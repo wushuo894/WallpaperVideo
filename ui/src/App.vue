@@ -30,7 +30,7 @@
           </n-scrollbar>
         </div>
         <n-space vertical style="margin: auto;padding-bottom: 40px;">
-          <n-pagination @on-update:page="search" :page="page.pageNo" :page-count="page.totalPage"/>
+          <n-pagination :onUpdatePage="search" v-model:page="page.pageNo" :page-count="page.totalPage"/>
         </n-space>
       </div>
     </div>
