@@ -1,6 +1,7 @@
 package wallpaper.video;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.http.HttpUtil;
@@ -35,6 +36,11 @@ public class Main {
             if (List.of("-f", "--file").contains(k)) {
                 path = v;
             }
+        }
+
+        if (FileUtil.exist(path)) {
+            System.out.println("文件不存在 " + path);
+            System.exit(1);
         }
 
         ProjectUtil.setPath(path);
