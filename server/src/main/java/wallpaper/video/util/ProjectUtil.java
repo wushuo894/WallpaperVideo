@@ -38,7 +38,7 @@ public class ProjectUtil {
 
     @SneakyThrows
     public static void loadList() {
-        if (!LOCK.tryLock(100,TimeUnit.MILLISECONDS)) {
+        if (LOCK.isLocked()) {
             return;
         }
         LOCK.lock();
