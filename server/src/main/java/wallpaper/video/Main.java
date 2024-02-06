@@ -1,40 +1,17 @@
 package wallpaper.video;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.collection.ListUtil;
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.resource.ResourceUtil;
-import cn.hutool.core.io.watch.SimpleWatcher;
-import cn.hutool.core.io.watch.WatchMonitor;
-import cn.hutool.core.map.multi.ListValueMap;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.core.util.URLUtil;
-import cn.hutool.http.ContentType;
+import cn.hutool.core.util.ClassUtil;
+import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.http.HttpUtil;
-import com.google.gson.Gson;
-import lombok.Cleanup;
+import cn.hutool.http.server.SimpleServer;
+import cn.hutool.http.server.action.Action;
 import lombok.SneakyThrows;
-import wallpaper.video.entity.Project;
-import wallpaper.video.entity.ProjectVo;
-import wallpaper.video.entity.SearchDto;
 import wallpaper.video.util.DistUtil;
-import wallpaper.video.util.JSON;
 import wallpaper.video.util.ProjectUtil;
 
-import java.io.File;
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.WatchEvent;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
+import java.util.Set;
 
 public class Main {
 
@@ -64,8 +41,20 @@ public class Main {
         ProjectUtil.loadList();
         ProjectUtil.startWatch();
 
-        HttpUtil.createServer(port)
-                .setRoot(DistUtil.getDistFile())
+        SimpleServer server = HttpUtil.createServer(port);
+
+        Set<Class<?>> classes = ClassUtil.scanPackage("wallpaper.video.action");
+        for (Class<?> aClass : classes) {
+            String simpleName = aClass.getSimpleName();
+            if (!simpleName.endsWith("Action")) {
+                continue;
+            }
+
+            String apiUrl = "/api/" + simpleName.replace("Action", "").toLowerCase();
+            server.addAction(apiUrl, (Action) ReflectUtil.newInstanceIfPossible(aClass));
+        }
+
+        server.setRoot(DistUtil.getDistFile())
                 .start();
     }
 }
