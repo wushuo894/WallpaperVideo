@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.http.server.SimpleServer;
 import cn.hutool.http.server.action.Action;
@@ -20,6 +21,14 @@ public class Main {
 
     @SneakyThrows
     public static void main(String[] args) {
+        System.out.println(System.getProperty("os.name"));
+
+        String osName = System.getProperty("os.name");
+
+        if (StrUtil.containsIgnoreCase(osName, "Mac OS X")) {
+            path = "~/Library/Application Support/Steam/steamapps/workshop/content/431960";
+        }
+
         int port = 8080;
 
         if (args.length % 2 > 0) {
