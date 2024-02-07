@@ -10,9 +10,9 @@ Q: 为什么使用它? A: 使用WallpaperEngine时想要观看视频壁纸需要
 
 ### 如何使用
 
-`-p --port 可以设置端口号 默认 8080`
+`-p --port 端口号 默认 8080`
 
-`-f --file 可以创意工坊的位置 默认 Z:\SteamLibrary\steamapps\workshop\content\431960`
+`-f --file 创意工坊的位置 默认 Z:\SteamLibrary\steamapps\workshop\content\431960`
 
 示例:
 
