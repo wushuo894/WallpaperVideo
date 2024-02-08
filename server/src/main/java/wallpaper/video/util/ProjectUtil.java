@@ -4,6 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.watch.SimpleWatcher;
 import cn.hutool.core.io.watch.WatchMonitor;
 import cn.hutool.core.thread.ThreadUtil;
+import cn.hutool.core.util.StrUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -57,6 +58,7 @@ public class ProjectUtil {
                     .map(file -> new File(file.getAbsolutePath() + File.separator + "project.json"))
                     .filter(File::exists)
                     .map(getEntity)
+                    .filter(project -> StrUtil.equalsIgnoreCase(project.getType(), "video"))
                     .peek(project -> {
                         if (empty) {
                             FILES.add(project);
