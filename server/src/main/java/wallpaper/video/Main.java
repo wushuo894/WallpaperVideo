@@ -2,19 +2,16 @@ package wallpaper.video;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.ClassUtil;
-import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.http.server.SimpleServer;
-import cn.hutool.http.server.action.Action;
 import lombok.SneakyThrows;
+import wallpaper.video.action.PlayAction;
 import wallpaper.video.util.ActionUtil;
 import wallpaper.video.util.DistUtil;
 import wallpaper.video.util.ProjectUtil;
 
 import java.util.List;
-import java.util.Set;
 
 public class Main {
 
@@ -41,10 +38,12 @@ public class Main {
             String v = strings.get(1);
             if (List.of("-p", "--port").contains(k)) {
                 port = Integer.parseInt(v);
-                continue;
             }
             if (List.of("-f", "--file").contains(k)) {
                 path = v;
+            }
+            if (List.of("-vc", "--videoCache").contains(k)) {
+                PlayAction.VIDEO_CACHE = StrUtil.equalsIgnoreCase(v, "true");
             }
         }
 
