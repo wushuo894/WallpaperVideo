@@ -9,6 +9,7 @@ import cn.hutool.http.HttpUtil;
 import cn.hutool.http.server.SimpleServer;
 import cn.hutool.http.server.action.Action;
 import lombok.SneakyThrows;
+import wallpaper.video.util.ActionUtil;
 import wallpaper.video.util.DistUtil;
 import wallpaper.video.util.ProjectUtil;
 
@@ -57,18 +58,7 @@ public class Main {
         ProjectUtil.startWatch();
 
         SimpleServer server = HttpUtil.createServer(port);
-
-        Set<Class<?>> classes = ClassUtil.scanPackage("wallpaper.video.action");
-        for (Class<?> aClass : classes) {
-            String simpleName = aClass.getSimpleName();
-            if (!simpleName.endsWith("Action")) {
-                continue;
-            }
-
-            String apiUrl = "/api/" + simpleName.replace("Action", "").toLowerCase();
-            server.addAction(apiUrl, (Action) ReflectUtil.newInstanceIfPossible(aClass));
-        }
-
+        ActionUtil.loadAction(server);
         server.setRoot(DistUtil.getDistFile())
                 .start();
     }

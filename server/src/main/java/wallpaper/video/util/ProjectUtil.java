@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ProjectUtil {
 
@@ -49,13 +50,24 @@ public class ProjectUtil {
                 return;
             }
             LOCK.lock();
-            List<Project> projectList = FileUtil.loopFiles(path, file -> file.getName().equals("project.json"))
-                    .stream()
+
+            boolean empty = FILES.isEmpty();
+
+            List<Project> projectList = Stream.of(FileUtil.ls(path))
+                    .map(file -> new File(file.getAbsolutePath() + File.separator + "project.json"))
+                    .filter(File::exists)
                     .map(getEntity)
+                    .peek(project -> {
+                        if (empty) {
+                            FILES.add(project);
+                        }
+                    })
                     .filter(project -> "video".equalsIgnoreCase(project.getType()))
                     .collect(Collectors.toList());
-            FILES.clear();
-            FILES.addAll(projectList);
+            if (!empty) {
+                FILES.clear();
+                FILES.addAll(projectList);
+            }
             ThreadUtil.sleep(30, TimeUnit.SECONDS);
             LOCK.unlock();
         });
