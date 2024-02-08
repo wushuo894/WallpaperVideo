@@ -2,18 +2,15 @@ package wallpaper.video;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.ClassUtil;
-import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.http.server.SimpleServer;
-import cn.hutool.http.server.action.Action;
 import lombok.SneakyThrows;
+import wallpaper.video.util.ActionUtil;
 import wallpaper.video.util.DistUtil;
 import wallpaper.video.util.ProjectUtil;
 
 import java.util.List;
-import java.util.Set;
 
 public class Main {
 
@@ -21,8 +18,6 @@ public class Main {
 
     @SneakyThrows
     public static void main(String[] args) {
-        System.out.println(System.getProperty("os.name"));
-
         String osName = System.getProperty("os.name");
 
         if (StrUtil.containsIgnoreCase(osName, "Mac OS X")) {
@@ -57,18 +52,7 @@ public class Main {
         ProjectUtil.startWatch();
 
         SimpleServer server = HttpUtil.createServer(port);
-
-        Set<Class<?>> classes = ClassUtil.scanPackage("wallpaper.video.action");
-        for (Class<?> aClass : classes) {
-            String simpleName = aClass.getSimpleName();
-            if (!simpleName.endsWith("Action")) {
-                continue;
-            }
-
-            String apiUrl = "/api/" + simpleName.replace("Action", "").toLowerCase();
-            server.addAction(apiUrl, (Action) ReflectUtil.newInstanceIfPossible(aClass));
-        }
-
+        ActionUtil.loadAction(server);
         server.setRoot(DistUtil.getDistFile())
                 .start();
     }

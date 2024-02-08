@@ -25,6 +25,7 @@ public class DistUtil {
     @SneakyThrows
     public static File getDistFile() {
         URL dist = ResourceUtil.getResource("dist");
+
         if (Objects.isNull(dist)) {
             return null;
         }
@@ -52,8 +53,29 @@ public class DistUtil {
                 }
                 @Cleanup
                 InputStream inputStream = jarFile.getInputStream(jarEntry);
-                System.out.println(new File(root + File.separator + name));
                 FileUtil.writeFromStream(inputStream, root + File.separator + name);
+            }
+            return distFile;
+        }
+
+        System.out.println("protocol = " + protocol);
+
+        if (protocol.equals("resource")) {
+            String resources = ResourceUtil.readUtf8Str("resources.json");
+            List list = JSON.fromJson(resources, List.class);
+
+            root = new File("").getAbsoluteFile();
+
+            File distFile = new File(root + File.separator + "dist");
+
+            if (distFile.exists()) {
+                return distFile;
+            }
+
+            for (Object fileName : list) {
+                @Cleanup
+                InputStream inputStream = ResourceUtil.getStream(fileName.toString());
+                FileUtil.writeFromStream(inputStream, root + File.separator + fileName);
             }
             return distFile;
         }

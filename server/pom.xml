@@ -34,6 +34,11 @@
             <artifactId>gson</artifactId>
             <version>2.10.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.16.1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -57,6 +62,21 @@
         </resources>
         <finalName>WallpaperVideo</finalName>
         <plugins>
+            <plugin>
+                <groupId>org.graalvm.buildtools</groupId>
+                <artifactId>native-maven-plugin</artifactId>
+                <version>0.10.0</version>
+                <configuration>
+                    <mainClass>wallpaper.video.Main</mainClass>
+                    <buildArgs>
+                        <buildArg>-H:ReflectionConfigurationFiles=src/main/resources/reflect-config.json</buildArg>
+                        <buildArg>-H:IncludeResources="dist/.*"</buildArg>
+                        <buildArg>-H:IncludeResources="resources.json$"</buildArg>
+                        <buildArg>-H:IncludeResources="reflect-config.json$"</buildArg>
+                        <buildArg>-H:-LocalizationOptimizedMode</buildArg>
+                    </buildArgs>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
