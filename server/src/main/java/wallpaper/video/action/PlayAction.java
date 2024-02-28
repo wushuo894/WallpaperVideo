@@ -6,6 +6,7 @@ import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.map.multi.ListValueMap;
 import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.URLUtil;
 import cn.hutool.http.server.HttpServerRequest;
 import cn.hutool.http.server.HttpServerResponse;
 import cn.hutool.http.server.action.Action;
@@ -51,17 +52,21 @@ public class PlayAction implements Action {
             }
         }
 
+
         res.setHeader("Accept-Ranges", "bytes");
         res.setHeader("Content-Type", "video/mp4");
-        res.setHeader("Content-Disposition", "inline;filename=" + project.getFile());
+        res.setHeader("Content-Disposition", "inline;filename=" + project.getId() + "." + FileUtil.extName(project.getFile()));
         res.setHeader("Content-Length", String.valueOf(file.length()));
 
-        @Cleanup
-        BufferedInputStream inputStream = FileUtil.getInputStream(file);
-        @Cleanup
-        OutputStream outputStream = res.getOut();
-        IoUtil.copy(inputStream, outputStream, 40960);
-        res.close();
+        try (res) {
+            @Cleanup
+            BufferedInputStream inputStream = FileUtil.getInputStream(file);
+            @Cleanup
+            OutputStream outputStream = res.getOut();
+            IoUtil.copy(inputStream, outputStream, 40960);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (VIDEO_CACHE) {
             // 避免同视频反复缓存
