@@ -9,3 +9,6 @@ body, html, #app {
     width: 100%;
 }
 
+.n-modal{
+    box-shadow: none;
+}

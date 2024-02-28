@@ -3,7 +3,7 @@
     <n-modal v-model:show="showModal" style="border-radius: 6px;margin: auto;">
       <div style="width: 50%;box-sizing: border-box;overflow: hidden;">
         <div style="width: 100%;display: flex;justify-content: center;">
-          <video controls :src='videoUrl' width="900px" height="500px"></video>
+          <video id="video" controls :src='videoUrl' width="900px" height="500px"></video>
         </div>
         <div style="margin-top: 10px;width: 100%;">
           <h2 style="color: white;">{{ item['title'] }}</h2>
@@ -154,6 +154,7 @@ let check = (_item) => {
   item.value = _item
   videoUrl.value = `/api/play?id=${_item.id}`;
   showModal.value = true
+  document.querySelector('#video').play()
 }
 
 </script>
