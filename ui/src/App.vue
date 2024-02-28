@@ -1,11 +1,11 @@
 <template>
   <div class="max">
     <n-modal v-model:show="showModal" style="border-radius: 6px;margin: auto;">
-      <div style="width: 50%;box-sizing: border-box;overflow: hidden;">
+      <div style="box-sizing: border-box;overflow: hidden;">
         <div style="width: 100%;display: flex;justify-content: center;">
           <video id="video" autoplay controls :src='videoUrl' width="900px" height="500px"></video>
         </div>
-        <div style="margin-top: 10px;width: 100%;">
+        <div style="margin-top: 10px;width: 900px;">
           <h2 style="color: white;">{{ item['title'] }}</h2>
           <p style="color: white;">{{ item['description'] }}</p>
           <p @click="toOpen(`https://steamcommunity.com/sharedfiles/filedetails/?id=${item.id}`)"
