@@ -22,7 +22,9 @@
             <n-button style="cursor: pointer;" @click="search(1)">搜索</n-button>
             <n-button @click="loadList">
               <template #icon>
-                <n-icon><ReloadCircleSharp/></n-icon>
+                <n-icon>
+                  <ReloadCircleSharp/>
+                </n-icon>
               </template>
             </n-button>
           </n-space>
@@ -150,7 +152,7 @@ let search = (_pageNo) => {
       })
 }
 
-let loadList = ()=>{
+let loadList = () => {
   fetch('/api/loadList', {
     method: 'POST'
   })
