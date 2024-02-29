@@ -12,5 +12,6 @@ public class LoadListAction implements Action {
     @Override
     public void doAction(HttpServerRequest req, HttpServerResponse res) {
         ProjectUtil.loadList();
+        res.write("1").close();
     }
 }
