@@ -20,6 +20,11 @@
             <n-input style="width: 400px;" v-model:value="searchText" type="text" placeholder="请输入关键字"
                      @keyup.enter="search(1)"/>
             <n-button style="cursor: pointer;" @click="search(1)">搜索</n-button>
+            <n-button @click="loadList">
+              <template #icon>
+                <n-icon><ReloadCircleSharp/></n-icon>
+              </template>
+            </n-button>
           </n-space>
         </div>
         <div style="overflow: hidden;flex-grow: 7;margin-top: 40px;margin-bottom: 10px;box-sizing: border-box;">
@@ -102,6 +107,7 @@
 <script setup>
 
 import {onMounted, ref} from 'vue'
+import {ReloadCircleSharp} from "@vicons/ionicons5"
 
 let list = ref([]);
 let pageNo = ref(1);
@@ -142,6 +148,12 @@ let search = (_pageNo) => {
         totalPage.value = json['totalPage']
         list.value = json['list']
       })
+}
+
+let loadList = ()=>{
+  fetch('/api/loadList', {
+    method: 'POST'
+  })
 }
 
 let toOpen = url => open(url)
