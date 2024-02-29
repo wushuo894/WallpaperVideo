@@ -12,3 +12,38 @@ body, html, #app {
 .n-modal{
     box-shadow: none;
 }
+
+
+@media (max-width: 600px) {
+    .n-space{
+        max-width: 100%;
+    }
+    .n-input-wrapper {
+        max-width: 100px;
+    }
+    #content {
+        max-width: 95%;
+        padding-top: 5px;
+    }
+    #list{
+        margin-top: 5px;
+    }
+    #list-content{
+        width: auto;
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 600px) {
+    #content {
+        max-width: 80%;
+        padding-top: 10%;
+    }
+    #list{
+        margin-top: 40px;
+    }
+    #list-content{
+        width: 100%;
+        grid-template-columns: repeat(auto-fill,108px);
+    }
+}
