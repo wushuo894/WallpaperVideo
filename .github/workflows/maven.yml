@@ -36,7 +36,7 @@ jobs:
         cp -r dist/* ../server/src/main/resources/dist
         cd ..
         version=$(cat server/pom.xml | grep -oPm1 '(?<=<version>).*?(?=</version>)')
-        echo "version=v$version" >> $GITHUB_ENV
+        echo "version=$version" >> $GITHUB_ENV
         mvn -B package --file server/pom.xml -T 1C
     - name: Release
       uses: softprops/action-gh-release@v1
