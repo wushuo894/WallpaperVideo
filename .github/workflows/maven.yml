@@ -49,4 +49,4 @@ jobs:
         append_body: false
         token: ${{ secrets.GITHUB_TOKEN }}
         files: |
-          WallpaperVideo.jar
+          ./WallpaperVideo.jar
