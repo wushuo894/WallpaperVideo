@@ -38,6 +38,7 @@ jobs:
         version=$(cat server/pom.xml | grep -oPm1 '(?<=<version>).*?(?=</version>)')
         echo "version=v$version" >> $GITHUB_ENV
         mvn -B package --file server/pom.xml -T 1C
+        cp server/target/WallpaperVideo-jar-with-dependencies.jar WallpaperVideo.jar
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
@@ -47,4 +48,4 @@ jobs:
         append_body: false
         token: ${{ secrets.GITHUB_TOKEN }}
         files: |
-          server/target/WallpaperVideo-jar-with-dependencies.jar
+          WallpaperVideo.jar
