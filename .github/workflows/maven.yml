@@ -39,7 +39,7 @@ jobs:
         echo "version=v$version" >> $GITHUB_ENV
         mvn -B package --file server/pom.xml -T 1C
         cp server/target/WallpaperVideo-jar-with-dependencies.jar WallpaperVideo.jar
-        ls -a
+        ls -al
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
