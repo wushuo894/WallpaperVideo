@@ -35,10 +35,18 @@ jobs:
         pnpm run build
         cp -r dist/* ../server/src/main/resources/dist
         cd ..
-        mvn -B package --file server/pom.xml
-        cp server/target/WallpaperVideo-jar-with-dependencies.jar ./
-    - name: Upload to Artifacts
-      uses: actions/upload-artifact@v4
+        version=$(cat server/pom.xml | grep -oPm1 '(?<=<version>).*?(?=</version>)')
+        echo "version=v$version" >> $GITHUB_ENV
+        mvn -B package --file server/pom.xml -T 1C
+        cp server/target/WallpaperVideo-jar-with-dependencies.jar WallpaperVideo.jar
+        ls -al
+    - name: Release
+      uses: softprops/action-gh-release@v1
       with:
-        name: Artifacts
-        path: ./*.jar
+        name: ${{ env.version }}
+        body: ${{ env.version }}
+        tag_name: ${{ env.version }}
+        append_body: false
+        token: ${{ secrets.GITHUB_TOKEN }}
+        files: |
+          ./WallpaperVideo.jar
