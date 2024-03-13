@@ -5,10 +5,9 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.http.server.SimpleServer;
-import lombok.SneakyThrows;
 import wallpaper.video.action.PlayAction;
+import wallpaper.video.action.RootAction;
 import wallpaper.video.util.ActionUtil;
-import wallpaper.video.util.DistUtil;
 import wallpaper.video.util.ProjectUtil;
 
 import java.util.List;
@@ -17,7 +16,6 @@ public class Main {
 
     private static String path = "Z:\\SteamLibrary\\steamapps\\workshop\\content\\431960";
 
-    @SneakyThrows
     public static void main(String[] args) {
         System.out.println(System.getProperty("os.name"));
 
@@ -58,7 +56,7 @@ public class Main {
 
         SimpleServer server = HttpUtil.createServer(port);
         ActionUtil.loadAction(server);
-        server.setRoot(DistUtil.getDistFile())
+        server.addAction("/", new RootAction())
                 .start();
     }
 }

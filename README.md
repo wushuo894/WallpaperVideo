@@ -18,7 +18,5 @@ Q: 为什么使用它? A: 使用WallpaperEngine时想要观看视频壁纸需要
 
 `java -jar WallpaperVideo-jar-with-dependencies.jar -p 8080 -f "Z:\SteamLibrary\steamapps\workshop\content\431960"`
 
-启动时或自动释放前端文件到当前dist目录，如需要更新前端文件则手都删除dist后重新自启动即可
-
 ![play](image/play.png)
 ![search](image/search.png)
