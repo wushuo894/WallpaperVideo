@@ -10,6 +10,7 @@ import wallpaper.video.action.RootAction;
 import wallpaper.video.util.ActionUtil;
 import wallpaper.video.util.ProjectUtil;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -33,14 +34,17 @@ public class Main {
             return;
         }
 
+        HashMap<String, String> map = new HashMap<>();
+
         Map<String, String> envMap = System.getenv();
         Map<String, String> argsMap = CollUtil.split(List.of(args), 2)
                 .stream()
                 .collect(Collectors.toMap(it -> it.get(0), it -> it.get(1)));
 
-        envMap.putAll(argsMap);
+        map.putAll(argsMap);
+        map.putAll(envMap);
 
-        for (Map.Entry<String, String> stringStringEntry : envMap.entrySet()) {
+        for (Map.Entry<String, String> stringStringEntry : map.entrySet()) {
             String k = stringStringEntry.getKey();
             String v = stringStringEntry.getValue();
             if (List.of("-p", "--port","PORT").contains(k)) {
