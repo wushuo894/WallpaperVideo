@@ -11,6 +11,8 @@ import wallpaper.video.util.ActionUtil;
 import wallpaper.video.util.ProjectUtil;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -31,20 +33,26 @@ public class Main {
             return;
         }
 
-        for (List<String> strings : CollUtil.split(List.of(args), 2)) {
-            String k = strings.get(0);
-            String v = strings.get(1);
-            if (List.of("-p", "--port").contains(k)) {
+        Map<String, String> envMap = System.getenv();
+        Map<String, String> argsMap = CollUtil.split(List.of(args), 2)
+                .stream()
+                .collect(Collectors.toMap(it -> it.get(0), it -> it.get(1)));
+
+        envMap.putAll(argsMap);
+
+        for (Map.Entry<String, String> stringStringEntry : envMap.entrySet()) {
+            String k = stringStringEntry.getKey();
+            String v = stringStringEntry.getValue();
+            if (List.of("-p", "--port","PORT").contains(k)) {
                 port = Integer.parseInt(v);
             }
-            if (List.of("-f", "--file").contains(k)) {
+            if (List.of("-f", "--file","FILE").contains(k)) {
                 path = v;
             }
-            if (List.of("-vc", "--videoCache").contains(k)) {
+            if (List.of("-vc", "--videoCache","VideoCache").contains(k)) {
                 PlayAction.VIDEO_CACHE = StrUtil.equalsIgnoreCase(v, "true");
             }
         }
-
         if (!FileUtil.exist(path)) {
             System.out.println("文件不存在 " + path);
             System.exit(1);
