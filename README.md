@@ -18,5 +18,18 @@ Q: 为什么使用它? A: 使用WallpaperEngine时想要观看视频壁纸需要
 
 `java -jar WallpaperVideo-jar-with-dependencies.jar -p 8080 -f "Z:\SteamLibrary\steamapps\workshop\content\431960"`
 
-![play](image/play.png)
-![search](image/search.png)
+![play](https://github.com/wushuo894/WallpaperVideo/raw/master/image/play.png)
+![search](https://github.com/wushuo894/WallpaperVideo/raw/master/image/search.png
+
+### Docker部署
+
+`docker run -d \
+--name wallpaper-video \
+-v ./video:/video \
+-p 9877:9877 \
+-e PORT="9877" \
+-e VideoCache="FALSE" \
+-e FILE="/video" \
+-e TZ=Asia/Shanghai \
+--restart always \
+wushuo894/wallpaper-video`
