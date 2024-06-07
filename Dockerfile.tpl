@@ -2,7 +2,7 @@ FROM openjdk:17-jdk
 COPY server/target/WallpaperVideo-jar-with-dependencies.jar /usr/app/WallpaperVideo-jar-with-dependencies.jar
 WORKDIR /usr/app
 VOLUME /video
-EBV PORT="9877"
+ENV PORT="9877"
 ENV VideoCache="FALSE"
 ENV FILE="/video"
 ENV TZ="Asia/Shanghai"
