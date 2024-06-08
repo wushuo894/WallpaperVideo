@@ -14,11 +14,12 @@ Q: 为什么使用它? A: 使用WallpaperEngine时想要观看视频壁纸需要
 
 `docker run -d --name wallpaper-video -v ./video:/video -p 9877:9877 -e PORT="9877" -e VideoCache="FALSE" -e FILE="/video" -e TZ=Asia/Shanghai --restart always wushuo894/wallpaper-video`
 
-| 参数         | 作用     | 默认值    |
-|------------|--------|--------|
-| PORT       | 端口号    | 9877   |
-| VideoCache | 视频缓存   | FALSE  |
-| FILE       | 创意工坊位置 | /video |
+| 参数         | 作用     | 默认值           |
+|------------|--------|---------------|
+| PORT       | 端口号    | 9877          |
+| VideoCache | 视频缓存   | FALSE         |
+| FILE       | 创意工坊位置 | /video        |
+| TZ         | 时区     | Asia/Shanghai |
 
 #### 直接运行
 
