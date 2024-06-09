@@ -80,7 +80,7 @@ public class ProjectUtil {
      * 监控目录变化实时更新目录
      */
     public static void startWatch() {
-        try (WatchMonitor watchMonitor = WatchMonitor.createAll(path, new SimpleWatcher() {
+        WatchMonitor.createAll(path, new SimpleWatcher() {
             @Override
             public void onCreate(WatchEvent<?> event, Path currentPath) {
                 loadList();
@@ -95,8 +95,6 @@ public class ProjectUtil {
             public void onDelete(WatchEvent<?> event, Path currentPath) {
                 loadList();
             }
-        })) {
-            watchMonitor.start();
-        }
+        }).start();
     }
 }
