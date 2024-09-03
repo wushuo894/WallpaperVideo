@@ -31,6 +31,5 @@ Q: 为什么使用它? A: 使用WallpaperEngine时想要观看视频壁纸需要
 
     java -jar WallpaperVideo-jar-with-dependencies.jar -p 8080 -f "Z:\SteamLibrary\steamapps\workshop\content\431960"
 
-![play](https://github.com/wushuo894/WallpaperVideo/raw/master/image/play.png)
-![search](https://github.com/wushuo894/WallpaperVideo/raw/master/image/search.png)
+![1.jpg](https://github.com/wushuo894/WallpaperVideo/raw/master/image/1.jpg)
 
