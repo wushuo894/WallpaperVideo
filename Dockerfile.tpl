@@ -7,5 +7,5 @@ ENV VideoCache="FALSE"
 ENV FILE="/video"
 ENV TZ="Asia/Shanghai"
 EXPOSE 9877
-RUN ln -s /opt/java/openjdk /usr/local/openjdk-17
+RUN ln -s /usr/local/openjdk-17 /opt/java/openjdk
 CMD ["java", "-jar", "WallpaperVideo-jar-with-dependencies.jar"]
