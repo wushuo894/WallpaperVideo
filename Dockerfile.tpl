@@ -1,4 +1,4 @@
-FROM openjdk:17-jdk
+FROM eclipse-temurin:17-jre
 COPY server/target/WallpaperVideo-jar-with-dependencies.jar /usr/app/WallpaperVideo-jar-with-dependencies.jar
 WORKDIR /usr/app
 VOLUME /video
